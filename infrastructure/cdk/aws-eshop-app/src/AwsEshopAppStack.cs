@@ -1,8 +1,11 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.IAM;
+using Amazon.CDK.AWS.Route53;
+using Amazon.CDK.AWS.Route53.Targets;
 using Amazon.CDK.AWS.S3;
 using Amazon.CDK.AWS.S3.Deployment;
 using Constructs;
+using System.Net.Sockets;
 
 namespace AwsEshopApp
 {
@@ -10,11 +13,8 @@ namespace AwsEshopApp
     {
         public AwsEshopAppStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
-            var env = new Amazon.CDK.Environment
-            {
-                Region = "us-east-1" // Replace with your desired region
-            };
 
+            //setting up S3
             var siteBucket = new Bucket(this, "aws-eshop-bucket", new BucketProps
             {
                 BucketName = "eshoponcloud.xyz",
@@ -44,6 +44,20 @@ namespace AwsEshopApp
             {
                 Sources = new[] { Source.Asset("../../../clients/aws-eshop-app/build") }, // Update this path
                 DestinationBucket = siteBucket
+            });
+
+            //setting up route53
+
+            var hostedZone = HostedZone.FromLookup(this, "aws-eshop-hostedzone", new HostedZoneProviderProps
+            {
+                DomainName = "eshoponcloud.xyz"
+            });
+
+            new ARecord(this, "aws-eshop-aliasrecord", new ARecordProps
+            {
+                Zone = hostedZone,
+                Target = RecordTarget.FromAlias(new BucketWebsiteTarget(siteBucket)),
+                RecordName = "eshoponcloud.xyz",
             });
         }
     }
