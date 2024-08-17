@@ -55,7 +55,7 @@ jobs:
 
       # Step 3: Install CDK Dependencies
       - name: Install CDK Dependencies
-        run: 
+        run: |
           dotnet restore
           dotnet build
         working-directory: ./infrastructure/cdk/aws-eshop-app/src
