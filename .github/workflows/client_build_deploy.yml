@@ -53,6 +53,10 @@ jobs:
         with:
           dotnet-version: '6.x' # Adjust to the required .NET version
 
+      # Step 3: Install AWS CDK
+      - name: Install AWS CDK
+        run: npm install -g aws-cdk
+        
       # Step 3: Install CDK Dependencies
       - name: Install CDK Dependencies
         run: |
@@ -67,6 +71,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           CDK_DEFAULT_ACCOUNT: ${{ secrets.AWS_ACCOUNT_ID }}  # Set this to your AWS Account ID
           CDK_DEFAULT_REGION: ${{ secrets.AWS_REGION }}       # Set this to your desired AWS region
-        run: |
+        run:
           cdk deploy --require-approval never
         working-directory: ./infrastructure/cdk/aws-eshop-app
