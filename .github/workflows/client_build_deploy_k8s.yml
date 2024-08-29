@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # Allows manual triggering
 
 jobs:
-  build:
+  BuildAndDeploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,3 +26,13 @@ jobs:
       - name: Build and push microservice1
         run: |
           docker buildx build --tag asingh1704/aws-eshop.client.app:${{ github.run_number }} --push ./clients/aws-eshop-app
+  
+      - name: Set up kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG_CONTENT }}" > $HOME/.kube/config
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f ./infrastructure/k8s/aws-eshop-app/deployment.yaml
+          kubectl apply -f ./infrastructure/k8s/aws-eshop-app/service.yaml
+          kubectl rollout status deployment/aws-eshop-client-app

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-eshop-client-app
+  namespace: aws-eshop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aws-eshop-client-app
+  template:
+    metadata:
+      labels:
+        app: aws-eshop-client-app
+    spec:
+      containers:
+      - name: aws-eshop-client-app
+        image: asingh1704/aws-eshop.client.app:${{ github.run_number }}
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: "0.2"
+        ports:
+        - containerPort: 80
