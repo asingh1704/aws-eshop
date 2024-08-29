@@ -25,4 +25,4 @@ jobs:
 
       - name: Build and push microservice1
         run: |
-          docker buildx build --tag asingh1704/aws-eshop/aws-eshop-app:${{ github.run_number }} --push ./clients/aws-eshop-app
+          docker buildx build --tag asingh1704/aws-eshop.client.app:${{ github.run_number }} --push ./clients/aws-eshop-app
