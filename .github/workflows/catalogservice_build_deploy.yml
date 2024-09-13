@@ -1,4 +1,4 @@
-name: Build and Deploy React App on K8
+name: Build and Deploy catalog service
 
 on:
   # push:
