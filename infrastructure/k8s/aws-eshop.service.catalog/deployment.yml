@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-eshop-service-catalog-depl
+  namespace: aws-eshop
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aws-eshop-service-catalog
+  template:
+    metadata:
+      labels:
+        app: aws-eshop-service-catalog
+    spec:
+      containers:
+      - name: aws-eshop-service-catalog
+        image: asingh1704/aws-eshop.service.catalog:${{ github.run_number }}
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: "0.2"
+        ports:
+        - containerPort: 80
