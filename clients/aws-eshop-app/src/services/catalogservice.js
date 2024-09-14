@@ -2,7 +2,7 @@ import axios from 'axios';
 export const getCatalog = async () => {
     try {
       const url = process.env.REACT_APP_API_BASE_URL + '/catalog/products'
-      const response = await axios.get(`url`, {
+      const response = await axios.get(url, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
         }
