@@ -4,7 +4,7 @@ export const exchangeCodeForToken = async (code) => {
         const params = new URLSearchParams();
         params.append('grant_type', 'authorization_code');
         params.append('client_id', '7am8optki35ia5ftachv574me5');
-        params.append('redirect_uri', 'http://localhost:3000');
+        params.append('redirect_uri', 'http://localhost:31090');
         params.append('code', code);
 
         const response = await axios.post('https://eshoponcloud.auth.us-east-1.amazoncognito.com/oauth2/token', params.toString(), {
