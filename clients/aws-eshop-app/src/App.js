@@ -19,7 +19,7 @@ function App() {
         if(!authCode)
         {
           console.log("no auth code too");
-          const loginUrl = 'https://eshoponcloud.auth.us-east-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=7am8optki35ia5ftachv574me5&redirect_uri=http://localhost:3000';
+          const loginUrl = 'https://eshoponcloud.auth.us-east-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=7am8optki35ia5ftachv574me5&redirect_uri=http://localhost:31090';
           window.location.href = loginUrl;
         }
         else
