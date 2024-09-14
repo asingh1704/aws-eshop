@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCatalog } from "../services/authservice";
+import { getCatalog } from "../services/catalogservice";
 
 const Home = () => {
     const [catalog, setCatalog] = useState([]);
