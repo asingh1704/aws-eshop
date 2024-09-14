@@ -1,12 +1,13 @@
 namespace: aws-eshop
 
 image:
-  repository: "asingh1704/aws-eshop.client.app"
+  repository: "asingh1704/aws-eshop.gateway.yarp"
   tag: "{{ .Values.github.run_number }}"  # Helm cannot directly use environment variables like ${{ github.run_number }}; you need to pass this value during deployment.
 
 deployment:
-  name: aws-eshop-client-app
+  name: aws-eshop-gateway-yarp-depl
   replicas: 1
+  appname: aws-eshop-gateway-yarp
 
 resources:
   limits:
@@ -17,8 +18,9 @@ resources:
     cpu: "0.2"
 
 service:
-  name: aws-eshop-client-app-service
+  name: aws-eshop-gateway-yarp-service
+  appname: aws-eshop-gateway-yarp
   type: NodePort
   port: 80
-  targetPort: 3000
+  targetPort: 8080
   containerPort: 80

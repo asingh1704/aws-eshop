@@ -6,7 +6,7 @@ image:
 
 deployment:
   name: aws-eshop-service-catalog-depl
-  replicas: 2
+  replicas: 1
   appname: aws-eshop-service-catalog
 
 resources:
