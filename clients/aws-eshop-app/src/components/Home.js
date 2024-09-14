@@ -19,6 +19,8 @@ const Home = () => {
     })
     return (<div>Hello You MF!!!
         <h1>Catalog</h1>
+        <h2>env is {process.env.NODE_ENV}</h2>
+        <h2>uri is {process.env.REACT_APP_API_BASE_URL}</h2>
       <ul>
         {catalog.map((item, index) => (
           <li key={index}>{item.same} - Qty: {item.qty} - Size: {item.size}</li>
