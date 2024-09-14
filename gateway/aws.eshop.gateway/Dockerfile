@@ -9,10 +9,10 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["aws.eshop.gateway/aws.eshop.gateway.csproj", "aws.eshop.gateway/"]
-RUN dotnet restore "./aws.eshop.gateway/aws.eshop.gateway.csproj"
+COPY ["aws.eshop.gateway.csproj", "./"]
+RUN dotnet restore "./aws.eshop.gateway.csproj"
 COPY . .
-WORKDIR "/src/aws.eshop.gateway"
+WORKDIR "/src"
 RUN dotnet build "./aws.eshop.gateway.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

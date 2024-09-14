@@ -1,6 +1,7 @@
-using aws.eshop.catalog;
+using Amazon.DynamoDBv2;
+using aws.eshop.catalog.DataStore;
+using aws.eshop.catalog.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// Add services to the container.
+builder.Services.AddControllers();
+// Add AWS DynamoDB service
+builder.Services.AddAWSService<IAmazonDynamoDB>();
+
+builder.Services.AddSingleton<IAmazonDynamoDB>(provider =>
+            new AmazonDynamoDBClient()); // Configure with your settings
+builder.Services.AddSingleton<IDynamoDBContextFactory, DynamoDBContextFactory>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
 
 // Add authorization services
 builder.Services.AddAuthorization();
@@ -42,33 +55,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
+app.UseRouting();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
+app.UseSwagger();
+app.UseSwaggerUI();
 
-
-app.MapGet("/catalog", () =>
-{
-    var catalog = Enumerable.Range(1, 5).Select(index =>
-        new Catalog
-        {
-            Name = "Nike Dunk",
-            Qty = 10,
-            Size = index
-        })
-        .ToArray();
-    return catalog;
-})
-.WithName("GetCatalog")
-.RequireAuthorization();
 
 // Use authentication
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers();
 app.Run();
 
 
