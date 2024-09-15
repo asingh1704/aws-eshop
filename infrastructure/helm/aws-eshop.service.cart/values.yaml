@@ -1,0 +1,26 @@
+namespace: aws-eshop
+
+image:
+  repository: "asingh1704/aws-eshop.service.cart"
+  tag: "{{ .Values.github.run_number }}"  # Helm cannot directly use environment variables like ${{ github.run_number }}; you need to pass this value during deployment.
+
+deployment:
+  name: aws-eshop-service-cart-depl
+  replicas: 1
+  appname: aws-eshop-service-cart
+
+resources:
+  limits:
+    memory: 512Mi
+    cpu: "1"
+  requests:
+    memory: 256Mi
+    cpu: "0.2"
+
+service:
+  name: aws-eshop-service-cart-service
+  appname: aws-eshop-service-cart
+  type: NodePort
+  port: 80
+  targetPort: 8080
+  containerPort: 80

@@ -1,0 +1,15 @@
+service:
+  type: NodePort
+  port: 6379
+  targetPort: 6379
+
+persistence:
+  enabled: true
+  storageClass: "standard"  # Update if you use a different storage class
+  accessModes:
+    - ReadWriteOnce
+  size: 8Gi
+
+cluster:
+  enabled: true
+  slaveCount: 2
