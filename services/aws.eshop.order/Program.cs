@@ -1,44 +1,47 @@
+using Amazon.DynamoDBv2;
+using Amazon.SQS;
+using aws.eshop.order.DataStore;
+using aws.eshop.order.Service;
+using aws.eshop.order.Sqs;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+// Add AWS DynamoDB service
+builder.Services.AddTransient<IOrderRepository,OrderRepository>();
+builder.Services.AddTransient<IOrderService,OrderService>();
+builder.Services.AddSingleton<IDynamoDBContextFactory, DynamoDBContextFactory>();
+builder.Services.AddSingleton<IAmazonDynamoDB>(provider =>
+            new AmazonDynamoDBClient()); // Configure with your settings
+builder.Services.AddSingleton<IAmazonSQS>(new AmazonSQSClient());
+
+builder.Services.AddHostedService<SqsConsumerService>(provider =>
+{
+    var sqsClient = provider.GetRequiredService<IAmazonSQS>();
+    var orderService = provider.GetRequiredService<IOrderService>();
+    
+    return new SqsConsumerService(sqsClient, orderService);
+});
 
 var app = builder.Build();
 
+app.UseRouting();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-app.UseHttpsRedirection();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
+// Use authentication
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
