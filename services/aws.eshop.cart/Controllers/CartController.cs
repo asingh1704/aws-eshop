@@ -1,6 +1,6 @@
 ﻿using aws.eshop.cart.DataStore;
 using aws.eshop.cart.Models;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+using aws.eshop.cart.Sqs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace aws.eshop.cart.Controllers
@@ -11,10 +11,12 @@ namespace aws.eshop.cart.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartStore _cartService;
+        private readonly IQueueService _queueService;
 
-        public CartController(ICartStore cartService)
+        public CartController(ICartStore cartService, IQueueService queueService)
         {
             _cartService = cartService;
+            _queueService = queueService;
         }
 
         [HttpGet("{name}")]
@@ -38,6 +40,14 @@ namespace aws.eshop.cart.Controllers
 
             await _cartService.SaveCartAsync(cart);
             return Ok();
+        }
+
+        [HttpPost("checkout")]
+        public async Task<IActionResult> Checkout([FromBody] Cart cart)
+        {
+            await _queueService.SendMessageAsync(cart);
+
+            return Ok(new { Message = "Checkout completed successfully" });
         }
     }
 }
