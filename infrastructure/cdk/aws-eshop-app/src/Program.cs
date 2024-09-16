@@ -15,7 +15,7 @@ namespace AwsEshopApp
             //        Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION"),
             //    }
             //});
-            new AwsEshopAppStack(app, "AwsEshopAppStack", new StackProps
+            new AwsEshopSQSStack(app, "AwsEshopSQSStack", new StackProps
             {
                 Env = new Amazon.CDK.Environment
                 {
