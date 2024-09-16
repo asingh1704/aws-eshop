@@ -1,0 +1,41 @@
+name: Build and Deploy Infrastructure
+
+on:
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up .NET Core
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x' # Adjust to the required .NET version
+
+      # Step 3: Install AWS CDK
+      - name: Install AWS CDK
+        run: npm install -g aws-cdk
+
+      # Step 3: Install CDK Dependencies
+      - name: Install CDK Dependencies
+        run: |
+          dotnet restore
+          dotnet build
+        working-directory: ./infrastructure/cdk/aws-eshop-app/src
+
+      # Step 4: Deploy CDK Stack
+      - name: Deploy CDK Stack
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          CDK_DEFAULT_ACCOUNT: ${{ secrets.AWS_ACCOUNT_ID }}  # Set this to your AWS Account ID
+          CDK_DEFAULT_REGION: ${{ secrets.AWS_REGION }}       # Set this to your desired AWS region
+        run:
+          cdk deploy --require-approval never
+        working-directory: ./infrastructure/cdk/aws-eshop-app

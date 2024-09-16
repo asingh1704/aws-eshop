@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aws.eshop.catalog", "aws.es
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aws.eshop.cart", "aws.eshop.cart\aws.eshop.cart.csproj", "{C2A07C5E-C44C-4681-9C62-BAE419B7DB11}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aws.eshop.order", "aws.eshop.order\aws.eshop.order.csproj", "{029E9493-4B9D-45D3-9757-10752486C393}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C2A07C5E-C44C-4681-9C62-BAE419B7DB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2A07C5E-C44C-4681-9C62-BAE419B7DB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2A07C5E-C44C-4681-9C62-BAE419B7DB11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{029E9493-4B9D-45D3-9757-10752486C393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{029E9493-4B9D-45D3-9757-10752486C393}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{029E9493-4B9D-45D3-9757-10752486C393}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{029E9493-4B9D-45D3-9757-10752486C393}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
