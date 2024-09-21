@@ -68,7 +68,7 @@ namespace AwsEshopApp
             // Enable Cognito Hosted UI
             new CfnUserPoolDomain(this, "CognitoDomain", new CfnUserPoolDomainProps
             {
-                Domain = "eshop", // This will create the domain aws-eshop.auth.<region>.amazoncognito.com
+                Domain = "eshop-" + System.Guid.NewGuid().ToString().Substring(0, 6), // Ensure domain is unique
                 UserPoolId = userPool.UserPoolId
             });
         }
