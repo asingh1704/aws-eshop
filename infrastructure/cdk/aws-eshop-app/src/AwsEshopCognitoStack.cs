@@ -68,7 +68,7 @@ namespace AwsEshopApp
             // Enable Cognito Hosted UI
             new CfnUserPoolDomain(this, "CognitoDomain", new CfnUserPoolDomainProps
             {
-                Domain = "eshop-" + System.Guid.NewGuid().ToString().Substring(0, 6), // Ensure domain is unique
+                Domain = "eshoponcloud", // Ensure domain is unique
                 UserPoolId = userPool.UserPoolId
             });
         }
