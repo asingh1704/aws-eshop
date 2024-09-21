@@ -37,5 +37,5 @@ jobs:
           CDK_DEFAULT_ACCOUNT: ${{ secrets.AWS_ACCOUNT_ID }}  # Set this to your AWS Account ID
           CDK_DEFAULT_REGION: ${{ secrets.AWS_REGION }}       # Set this to your desired AWS region
         run:
-          cdk deploy --require-approval never
+          cdk deploy --all --require-approval never
         working-directory: ./infrastructure/cdk/aws-eshop-app
