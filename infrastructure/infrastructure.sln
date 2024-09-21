@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwsEshopApp", "cdk\aws-eshop-app\src\AwsEshopApp.csproj", "{60E235AB-551B-4A21-9085-3AC248444CA0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwsEshopEks", "cdk\aws-eshop-eks\src\AwsEshopEks.csproj", "{75D1FCF0-D7C7-43FA-9ACE-20A3C84B4A22}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +15,11 @@ Global
 		{60E235AB-551B-4A21-9085-3AC248444CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E235AB-551B-4A21-9085-3AC248444CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E235AB-551B-4A21-9085-3AC248444CA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75D1FCF0-D7C7-43FA-9ACE-20A3C84B4A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75D1FCF0-D7C7-43FA-9ACE-20A3C84B4A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75D1FCF0-D7C7-43FA-9ACE-20A3C84B4A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75D1FCF0-D7C7-43FA-9ACE-20A3C84B4A22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F3934DA7-DCA4-4324-B414-FB2C7EAC210D}
 	EndGlobalSection
 EndGlobal
