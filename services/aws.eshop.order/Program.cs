@@ -10,6 +10,10 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -18,7 +22,8 @@ builder.Services.AddControllers();
 // Add AWS DynamoDB service
 builder.Services.AddTransient<IOrderRepository,OrderRepository>();
 builder.Services.AddTransient<IOrderService,OrderService>();
-builder.Services.AddSingleton<IDynamoDBContextFactory, DynamoDBContextFactory>();
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddSingleton<IAmazonDynamoDB>(provider =>
             new AmazonDynamoDBClient()); // Configure with your settings
 builder.Services.AddSingleton<IAmazonSQS>(new AmazonSQSClient());

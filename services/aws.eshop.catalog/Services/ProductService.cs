@@ -7,7 +7,6 @@ namespace aws.eshop.catalog.Services
     {
         Task<Product> GetProductDetailsAsync(string productId);
         Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryId);
-        Task<Category> GetCategoryByIdAsync(string categoryId);
         Task<IEnumerable<Product>> GetAllProductsAsync();
         Task<IEnumerable<Category>> GetAllCategoriesAsync();
     }
@@ -33,10 +32,7 @@ namespace aws.eshop.catalog.Services
             return await _productRepository.GetProductsByCategoryAsync(categoryId);
         }
 
-        public async Task<Category> GetCategoryByIdAsync(string categoryId)
-        {
-            return await _categoryRepository.GetCategoryByIdAsync(categoryId);
-        }
+       
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {

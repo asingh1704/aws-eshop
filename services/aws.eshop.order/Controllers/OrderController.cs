@@ -21,7 +21,7 @@ namespace aws.eshop.order.Controllers
         {
             var orders = await _dynamoDbService.GetOrdersByUsernameAsync(username);
 
-            if (orders == null || orders.Count == 0)
+            if (orders == null || orders.Count() == 0)
             {
                 return NotFound();
             }

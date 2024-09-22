@@ -1,10 +1,16 @@
 using Amazon.DynamoDBv2;
 using aws.eshop.catalog.DataStore;
+using aws.eshop.catalog.Models;
 using aws.eshop.catalog.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -21,7 +27,8 @@ builder.Services.AddSingleton<IDynamoDBContextFactory, DynamoDBContextFactory>()
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
-
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDB"));
+builder.Services.AddSingleton<MongoDbContext>();
 
 // Add authorization services
 builder.Services.AddAuthorization();
@@ -29,8 +36,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_tdDYq6hv5";
-        //options.MetadataAddress = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_tdDYq6hv5";
+        options.Authority = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_IETKbHU6D";
+        //options.MetadataAddress = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_IETKbHU6D";
         options.IncludeErrorDetails = true;
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters = new TokenValidationParameters
@@ -39,7 +46,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false, // Set to true if using Audience validation
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_tdDYq6hv5" // Ensure this matches your issuer
+            ValidIssuer = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_IETKbHU6D" // Ensure this matches your issuer
         };
         options.Events = new JwtBearerEvents
         {

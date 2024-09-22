@@ -1,7 +1,6 @@
-﻿using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
-using aws.eshop.catalog.Models;
+﻿using aws.eshop.catalog.Models;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace aws.eshop.catalog.DataStore
 {
@@ -14,41 +13,27 @@ namespace aws.eshop.catalog.DataStore
 
     public class ProductRepository : IProductRepository
     {
-        private readonly DynamoDBContext _context;
+        private readonly MongoDbContext _dbContext;
 
-        public ProductRepository(IDynamoDBContextFactory contextFactory)
+        public ProductRepository(MongoDbContext dbContext)
         {
-            _context = contextFactory.CreateContext();
+            _dbContext = dbContext;
         }
 
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            var search = _context.ScanAsync<Product>(new List<ScanCondition>());
-            return await search.GetRemainingAsync();
+            return await _dbContext.Products.Find(_ => true).ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(string id)
         {
-            return await _context.LoadAsync<Product>(id);
+            return await _dbContext.Products.Find(Builders<Product>.Filter.Eq("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string categoryId)
+        public async Task<IEnumerable<Product>> GetProductsByCategoryAsync(string category)
         {
-            var query = new QueryOperationConfig
-            {
-                IndexName = "CategoryIndex",
-                KeyExpression = new Expression
-                {
-                    ExpressionStatement = "CategoryId = :v_categoryId",
-                    ExpressionAttributeValues = new Dictionary<string, DynamoDBEntry>
-                {
-                    { ":v_categoryId", categoryId }
-                }
-                }
-            };
-
-            var search = _context.FromQueryAsync<Product>(query);
-            return await search.GetRemainingAsync();
+            var filter = Builders<Product>.Filter.Eq(p => p.Category, category);
+            return await _dbContext.Products.Find(filter).ToListAsync();
         }
     }
 }

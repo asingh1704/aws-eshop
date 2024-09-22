@@ -1,32 +1,34 @@
-﻿using Amazon.DynamoDBv2.DataModel;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace aws.eshop.catalog.Models
 {
-    [DynamoDBTable("Products")]
     public class Product
     {
-        [DynamoDBHashKey]
-        public string ProductId { get; set; }
+        [BsonId] // Marks this field as the unique identifier (_id in MongoDB)
+        [BsonRepresentation(BsonType.ObjectId)] // Allows working with string representations of ObjectId
+        public string Id { get; set; }
 
-        [DynamoDBProperty]
-        public string CategoryId { get; set; }
 
-        [DynamoDBProperty]
+        [BsonElement("category")]
+        public string Category { get; set; }
+
+        [BsonElement("brand")]
         public string Brand { get; set; }
 
-        [DynamoDBProperty]
+        [BsonElement("discription")]
         public string Discription { get; set; }
 
-        [DynamoDBProperty]
+        [BsonElement("name")]
         public string ProductName { get; set; }
 
-        [DynamoDBProperty]
+        [BsonElement("imgurl")]
         public string ImageUrl { get; set; }
 
-        [DynamoDBProperty]
+        [BsonElement("qty")]
         public decimal Qty { get; set; }
 
-        [DynamoDBProperty]
+        [BsonElement("price")]
         public decimal Price { get; set; }
     }
 }
